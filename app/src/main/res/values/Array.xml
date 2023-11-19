@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="retos">
+        <item>Жди денег</item>
+        <item>Выйдешь замуж</item>
+        <item>Найдешь друзей</item>
+        <item>Отпраившься в поездку</item>
+        <item>Влюбтшься поуши </item>
+    </string-array>
+</resources>
