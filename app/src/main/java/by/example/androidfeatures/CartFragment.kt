@@ -1,21 +1,24 @@
 package by.example.androidfeatures
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.example.androidfeatures.Adapter.CartAdapter
 import by.example.androidfeatures.Models.PopularModel
+import by.example.androidfeatures.Models.SharedModel
 import by.example.androidfeatures.databinding.FragmentCartBinding
 
 
 class CartFragment : Fragment() {
 
-    private lateinit var binding:FragmentCartBinding
-    private lateinit var list:ArrayList<PopularModel>
-    private lateinit var adapter:CartAdapter
+    private lateinit var binding: FragmentCartBinding
+    private lateinit var adapter: CartAdapter
+    private lateinit var sharedModel: SharedModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,25 +31,39 @@ class CartFragment : Fragment() {
     ): View? {
 
 
-        binding=FragmentCartBinding.inflate(inflater,container, false)
+        binding = FragmentCartBinding.inflate(inflater, container, false)
+        sharedModel = ViewModelProvider(requireActivity()).get(SharedModel::class.java)
 
-        list= ArrayList()
-        list.add(PopularModel(R.drawable.pop_menu_burger, "Sandwich", "7$",1))
-        list.add(PopularModel(R.drawable.pop_menu_momo, "Momo", "5$",1))
-        list.add(PopularModel(R.drawable.pop_menu_sandwich, "Burger", "6$",1))
-        list.add(PopularModel(R.drawable.pop_menu_burger, "Sandwich", "7$",1))
-        list.add(PopularModel(R.drawable.pop_menu_momo, "Momo", "5$",1))
-        list.add(PopularModel(R.drawable.pop_menu_sandwich, "Burger", "6$",1))
-        list.add(PopularModel(R.drawable.pop_menu_burger, "Sandwich", "7$",1))
-        list.add(PopularModel(R.drawable.pop_menu_momo, "Momo", "5$",1))
-        list.add(PopularModel(R.drawable.pop_menu_sandwich, "Burger", "6$",1))
 
-        adapter= CartAdapter(requireContext(),list)
-        binding.cartRv.layoutManager=LinearLayoutManager(requireContext())
-        binding.cartRv.adapter=adapter
+
+        adapter = CartAdapter(requireContext(), sharedModel.cartItem.value ?: ArrayList())
+        binding.cartRv.layoutManager = LinearLayoutManager(requireContext())
+        binding.cartRv.adapter = adapter
+
+        binding.proceedBtn.setOnClickListener {
+
+           val totalPrice=sharedModel.cartItem.value?.let{it1->colPrice(it1)}
+            val TotalPrice=totalPrice.toString()
+            val intent = Intent(requireContext(), Details::class.java) //откуда->куда
+            intent.putExtra("totalP",TotalPrice) //берет только String!!!
+            startActivity(intent)
+        }
+
 
         return binding.root
     }
 
+    fun calculatePrice(itemPrices: List<PopularModel>): Int {
+        var totalPrice = 0
+        itemPrices.forEach { itemPrice ->
+            val price = itemPrice.getFoodPrice() * itemPrice.getFoodCount()
+
+            totalPrice += price
+        }
+
+        return totalPrice
+    }
+
 
 }
+

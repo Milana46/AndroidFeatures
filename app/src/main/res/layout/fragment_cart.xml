@@ -11,7 +11,7 @@
         android:id="@+id/textView19"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="48dp"
         android:fontFamily="@font/lato"
         android:text="Cart"
         android:textSize="24sp"
@@ -23,16 +23,16 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cartRv"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@color/recyclerViewColor"
+        android:layout_width="391dp"
+        android:layout_height="468dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
+        android:background="@color/recyclerViewColor"
         app:layout_constraintBottom_toTopOf="@+id/proceed_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView19"
-        />
+        app:layout_constraintVertical_bias="0.045" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/proceed_btn"
@@ -40,15 +40,16 @@
         android:layout_height="65dp"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="72dp"
         android:background="@drawable/text_view_bg"
-        android:text="Put"
         android:fontFamily="@font/lato"
-        android:textSize="20sp"
+        android:text="Put"
         android:textAllCaps="false"
         android:textColor="@color/green"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

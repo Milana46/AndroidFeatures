@@ -6,9 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.example.androidfeatures.Adapter.PopularAdapter
 import by.example.androidfeatures.Models.PopularModel
+import by.example.androidfeatures.Models.SharedModel
 import by.example.androidfeatures.databinding.FragmentSearchBinding
 
 
@@ -17,6 +19,8 @@ class SearchFragment : Fragment() {
    private lateinit var binding:FragmentSearchBinding
    private lateinit var adapter: PopularAdapter
    private lateinit var list:ArrayList<PopularModel>
+
+   private lateinit var sharedModel: SharedModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +32,9 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val binding=FragmentSearchBinding.inflate(inflater,container,false)
+        binding=FragmentSearchBinding.inflate(inflater,container,false)
+
+        sharedModel=ViewModelProvider(requireActivity()).get(SharedModel::class.java)
 
         list = ArrayList()
         list.add(PopularModel(R.drawable.pop_menu_burger, "Sandwich", "7$",1))
@@ -45,6 +51,7 @@ class SearchFragment : Fragment() {
         list.add(PopularModel(R.drawable.pop_menu_sandwich, "Burger", "6$",1))
 
         adapter = PopularAdapter(requireContext(), list) //экземпляр класса PopularAdapter;
+        adapter.setSharedModel(sharedModel)
 
         binding.searchMenuRv.adapter=adapter
         binding.searchMenuRv.layoutManager = LinearLayoutManager(requireContext())
@@ -60,17 +67,13 @@ class SearchFragment : Fragment() {
             override fun onQueryTextSubmit(query: String?): Boolean {
 
                 filterList(query)
-
                 return true
-
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 filterList(newText)
                 return true
             }
-
-
         })
     }
 
@@ -86,5 +89,4 @@ class SearchFragment : Fragment() {
       }
       adapter.updateList(filteredList as ArrayList<PopularModel>)
   }
-
 }

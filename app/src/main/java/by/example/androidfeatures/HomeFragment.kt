@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
@@ -16,6 +17,7 @@ import androidx.viewpager2.widget.ViewPager2
 import by.example.androidfeatures.Adapter.PopularAdapter
 import by.example.androidfeatures.Adapter.imageSladeAdapter
 import by.example.androidfeatures.Models.PopularModel
+import by.example.androidfeatures.Models.SharedModel
 import kotlin.math.abs
 
 
@@ -32,7 +34,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var goMenuText:TextView
 
-
+    private lateinit var sharedModel: SharedModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,6 +44,7 @@ class HomeFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
         viewPager2 = view.findViewById(R.id.imageSlider)
+        sharedModel= ViewModelProvider(requireActivity()).get(SharedModel::class.java)
 
         homeRv = view.findViewById(R.id.home_RV) as RecyclerView
         goMenuText=view.findViewById(R.id.go_menu)
@@ -70,10 +73,10 @@ class HomeFragment : Fragment() {
         listPopular.add(PopularModel(R.drawable.pop_menu_sandwich, "Burger", "6$",1))
 
         popularAdapter = PopularAdapter(requireContext(), listPopular) //экземпляр класса PopularAdapter;
+        popularAdapter.setSharedModel(sharedModel)
 
         homeRv?.adapter=popularAdapter
         homeRv?.layoutManager = LinearLayoutManager(requireContext())
-
 
         return view
     }

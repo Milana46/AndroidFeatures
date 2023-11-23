@@ -60,6 +60,8 @@ dependencies {
     annotationProcessor("androidx.room:room-compiler:$room_version")
     implementation("androidx.room:room-rxjava2:$room_version")
 
+    implementation'com.airbnb.android:lottie:3.4.0'
+
 
 
 
