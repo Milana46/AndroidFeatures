@@ -23,6 +23,8 @@ class Details : AppCompatActivity() {
             bottomFragment.show(supportFragmentManager, "Test")
         }
 
+        val totalPrice=intent.getStringExtra("totalPrice")  //получаем от PutExtra;
+        binding.price.text=totalPrice
     }
 
 

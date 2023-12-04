@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -42,10 +43,14 @@ class CartFragment : Fragment() {
 
         binding.proceedBtn.setOnClickListener {
 
-           val totalPrice=sharedModel.cartItem.value?.let{it1->colPrice(it1)}
+           val totalPrice=sharedModel.cartItem.value?.let{it1->calculatePrice(it1)}
+            if (totalPrice==0)
+            {
+                Toast.makeText(requireContext(),"List is Empty!",Toast.LENGTH_SHORT).show()
+            }
             val TotalPrice=totalPrice.toString()
             val intent = Intent(requireContext(), Details::class.java) //откуда->куда
-            intent.putExtra("totalP",TotalPrice) //берет только String!!!
+            intent.putExtra("totalP",TotalPrice) //берет только String!!!+передать intent на Activity
             startActivity(intent)
         }
 
@@ -56,7 +61,7 @@ class CartFragment : Fragment() {
     fun calculatePrice(itemPrices: List<PopularModel>): Int {
         var totalPrice = 0
         itemPrices.forEach { itemPrice ->
-            val price = itemPrice.getFoodPrice() * itemPrice.getFoodCount()
+            val price = itemPrice.getFoodPriceConstant() * itemPrice.getFoodCount()
 
             totalPrice += price
         }

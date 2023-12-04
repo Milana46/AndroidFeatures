@@ -51,16 +51,21 @@ class CartAdapter(
 
     override fun onBindViewHolder(holder: CartViewHolder, position: Int) {
         val listModel = list[position]
-        holder.foodPrice.text = listModel.getFoodPrice()
+        holder.foodPrice.text = listModel.getFoodPrice().toString()
         holder.foodName.text = listModel.getFoodName()
         listModel.getFoodImage()?.let {
             holder.foodImage.setImageResource(it)
+            holder.foodCount.text = listModel.getFoodCount().toString()
         }
+
 
         holder.plus.setOnClickListener {
             if (listModel.getFoodCount() < 10) {
                 val count = listModel.getFoodCount() + 1
                 listModel.setFoodCount(count)
+                val priceP = listModel.getFoodPriceConstant() * listModel.getFoodCount()
+                listModel.setFoodPrice(priceP)
+                holder.foodPrice.text = listModel.getFoodPrice().toString()
                 holder.foodCount.text = listModel.getFoodCount().toString()
 
             }
@@ -72,13 +77,16 @@ class CartAdapter(
             if (listModel.getFoodCount() > 1) {
                 val count = listModel.getFoodCount() - 1
                 listModel.setFoodCount(count)
+                val priceP = listModel.getFoodPrice() * listModel.getFoodCount()
+                listModel.setFoodPrice(priceP)
+                holder.foodPrice.text = listModel.getFoodPriceConstant().toString()
                 holder.foodCount.text = listModel.getFoodCount().toString()
             } else {
                 holder.bindItem()
             }
 
         }
-        holder.deleteBtn.setOnClickListener{
+        holder.deleteBtn.setOnClickListener {
             holder.bindItem()
         }
     }
